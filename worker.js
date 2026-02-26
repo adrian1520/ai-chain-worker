@@ -33,6 +33,10 @@ export default {
     if (url.pathname === "/write" && request.method === "POST") {
       const body = await request.json();
 
+      if (!body.path.startsWith("ai_chain/")) {
+        return new Response("Forbidden path", { status: 403 });
+      }
+
       const encoded = btoa(body.content);
 
       const gh = await fetch(
